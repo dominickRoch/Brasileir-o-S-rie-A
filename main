@@ -1,0 +1,140 @@
+    #include <stdio.h>
+    #include <string.h>
+    
+    
+    struct Time {
+        char nome[50];
+        char posicao[10];
+        int pontos;
+    };
+
+    void Menu() {
+
+      printf("Brasileirão Série A\n\n");
+      printf("[1] - [Nome e Posição]\n");
+      printf("[2] - [5 primeiros colocados]\n");
+      printf("[3] - [5 últimos colocados]\n");
+      printf("[4] - [Diferença dos 5 ultimos colocados]\n");
+      printf("[5] - [Diferença dos 5 primeiros colocados]\n");
+      printf("[6] - [Reordenar Tabela]\n");
+      printf("[0] - [Sair]\n");
+      
+    }
+    
+    // Função para buscar um time pelo nome e posição
+    void buscarTime(struct Time times[], int n, const char nome[], const char posicao[]) {
+        for (int i = 0; i < n; i++) {
+            if (strcmp(times[i].nome, nome) == 0 && strcmp(times[i].posicao, posicao) == 0) {
+                printf("Time encontrado:\n");
+                printf("Nome: %s\nPosicao: %s\nPontos: %d\n", times[i].nome, times[i].posicao, times[i].pontos);
+                return;
+            }
+        }
+        printf("Time nao encontrado.\n");
+    }
+    
+    // exibir os 5 primeiros colocados
+    void exibirPrimeirosColocados(struct Time times[], int n) {
+        printf("Os 5 primeiros colocados sao:\n");
+        for (int i = 0; i < 5 && i < n; i++) {
+            printf("%s - Posicao: %s, Pontos: %d\n", times[i].nome, times[i].posicao, times[i].pontos);
+        }
+    }
+    
+    // exibir os 5 ultimos colocados
+    void exibirUltimosColocados(struct Time times[], int n) {
+        printf("Os 5 ultimos colocados sao:\n");
+        for (int i = n - 5; i < n; i++) {
+            printf("%s - Posicao: %s, Pontos: %d\n", times[i].nome, times[i].posicao, times[i].pontos);
+        }
+    }
+    
+    // exibir a diferença de pontos dos 5 ultimos colocados
+    void exibirDiferencaUltimos(struct Time times[], int n) {
+        int diferenca = times[n - 1].pontos - times[n - 5].pontos;
+        printf("Diferenca de pontos dos 5 ultimos colocados: %d\n", diferenca);
+    }
+    
+    // exibir a diferença de pontos dos 5 primeiros colocados
+    void exibirDiferencaPrimeiros(struct Time times[]) {
+        int diferenca = times[4].pontos - times[0].pontos;
+        printf("Diferenca de pontos dos 5 primeiros colocados: %d\n", diferenca);
+    }
+    
+    // exibir metade dos times
+    void reformarTabela(struct Time times[], int n) {
+        printf("Metade dos times da tabela:\n");
+        for (int i = 0; i < n / 2; i++) {
+            printf("%s - Posicao: %s, Pontos: %d\n", times[i].nome, times[i].posicao, times[i].pontos);
+        }
+    }
+    
+    int main() {
+        int op;
+        struct Time tabela[] = {
+            {"Palmeiras", "1", 69},
+            {"Atlético-MG", "2", 66},
+            {"Flamengo", "3", 66},
+            {"Grêmio", "4", 65},
+            {"Botafogo", "5", 64},
+            {"Red Bull Bragantino", "6", 62},
+            {"Fluminense", "7", 56},
+            {"Athletico", "8", 56},
+            {"Internacional", "9", 52},
+            {"Fortaleza", "10", 51},
+            {"São Paulo", "11", 50},
+            {"Cuiabá", "12", 48},
+            {"Corinthians", "13", 47},
+            {"Cruzeiro", "14", 46},
+            {"Santos", "15", 43},
+            {"Vasco", "16", 42},
+            {"Bahia", "17", 41},
+            {"Goiás", "18", 35},
+            {"Coritiba", "19", 30},
+            {"América-MG", "20", 24}
+        };
+    
+        //int numTimes = sizeof(tabela) % tabela;
+
+    int numTimes = sizeof(tabela) / sizeof(tabela[0]);
+    
+        do {
+            Menu();
+            printf("Escolha a [Opção]: ");
+            scanf("%d", &op);
+    
+            switch (op) {
+                case 1:
+                    printf("Escreva o nome do time: ");
+                    scanf("%s", tabela[numTimes].nome);
+                    printf("Escreva a posição do time: ");
+                    scanf("%s", tabela[numTimes].posicao);
+                    buscarTime(tabela, numTimes + 1, tabela[numTimes].nome, tabela[numTimes].posicao);
+                    numTimes++;
+                    break;
+                case 2:
+                    exibirPrimeirosColocados(tabela, numTimes);
+                    break;
+                case 3:
+                    exibirUltimosColocados(tabela, numTimes);
+                    break;
+                case 4:
+                    exibirDiferencaUltimos(tabela, numTimes);
+                    break;
+                case 5:
+                    exibirDiferencaPrimeiros(tabela);
+                    break;
+                case 6:
+                    reformarTabela(tabela, numTimes);
+                    break;
+                case 0:
+                    printf("Saindo do programa.\n");
+                    break;
+                default:
+                    printf("Opção inválida. Tente novamente.\n");
+                    break;
+            }
+        } while (op != 0);
+    
+        return 0;
+    }
